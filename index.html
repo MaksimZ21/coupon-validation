@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Code Validation</title>
+</head>
+<body>
+    <h1>Enter Your Coupon Code</h1>
+    <form id="couponForm">
+        <input type="text" id="couponCode" placeholder="Enter coupon code" required>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="responseMessage"></p>
+
+    <script>
+        // Handle form submission
+        document.getElementById("couponForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent form from reloading the page
+
+            const couponCode = document.getElementById("couponCode").value;
+            const responseMessage = document.getElementById("responseMessage");
+
+            // Replace this URL with your Google Apps Script Web App URL
+            const scriptURL = `https://script.google.com/macros/s/AKfycbz-XAv9U0SsSMLIMiRGhYG-m2OJm6mpCMLO2xBgKjyiE5ur7cR4nFim3--0qUoxd9bDYQ/exec?code=${couponCode}`;
+
+            // Check the coupon code by calling your Google Apps Script web app
+            fetch(scriptURL)
+                .then(response => response.text())
+                .then(result => {
+                    responseMessage.textContent = result;  // Show the result message (valid/invalid)
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    responseMessage.textContent = "There was an error. Please try again.";
+                });
+        });
+    </script>
+</body>
+</html>
