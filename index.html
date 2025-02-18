@@ -4,35 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coupon Code Validation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Enter Your Coupon Code</h1>
-    <form id="couponForm">
-        <input type="text" id="couponCode" placeholder="Enter coupon code" required>
-        <button type="submit">Submit</button>
-    </form>
-    <p id="responseMessage"></p>
+<body class="bg-gray-100 text-gray-800 font-sans flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-xl shadow-lg max-w-sm w-full">
+        <h1 class="text-3xl font-semibold text-center text-indigo-600 mb-6">Coupon Code & Phone Validation</h1>
+        
+        <form id="couponForm" class="space-y-4">
+            <div>
+                <label for="couponCode" class="block text-sm font-medium text-gray-700">Coupon Code</label>
+                <input type="text" id="couponCode" placeholder="Enter coupon code" class="w-full px-4 py-2 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+            </div>
+
+            <div>
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input type="text" id="phoneNumber" placeholder="Enter phone number" class="w-full px-4 py-2 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+            </div>
+
+            <button type="submit" class="w-full py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Submit</button>
+        </form>
+
+        <p id="responseMessage" class="text-center text-lg font-medium mt-4"></p>
+    </div>
 
     <script>
-        // Handle form submission
         document.getElementById("couponForm").addEventListener("submit", function(event) {
-            event.preventDefault();  // Prevent form from reloading the page
+            event.preventDefault();
 
             const couponCode = document.getElementById("couponCode").value;
+            const phoneNumber = document.getElementById("phoneNumber").value;
             const responseMessage = document.getElementById("responseMessage");
 
-            // Replace this URL with your Google Apps Script Web App URL
-            const scriptURL = `https://script.google.com/macros/s/AKfycbz-XAv9U0SsSMLIMiRGhYG-m2OJm6mpCMLO2xBgKjyiE5ur7cR4nFim3--0qUoxd9bDYQ/exec?code=${couponCode}`;
+            const scriptURL = `https://script.google.com/macros/s/AKfycbz-XAv9U0SsSMLIMiRGhYG-m2OJm6mpCMLO2xBgKjyiE5ur7cR4nFim3--0qUoxd9bDYQ/exec?code=${couponCode}&phone=${phoneNumber}`;
 
-            // Check the coupon code by calling your Google Apps Script web app
             fetch(scriptURL)
                 .then(response => response.text())
                 .then(result => {
-                    responseMessage.textContent = result;  // Show the result message (valid/invalid)
+                    responseMessage.textContent = result;
+                    if (result.includes("✅")) {
+                        responseMessage.classList.add("text-green-500");
+                        responseMessage.classList.remove("text-red-500");
+                    } else {
+                        responseMessage.classList.add("text-red-500");
+                        responseMessage.classList.remove("text-green-500");
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     responseMessage.textContent = "There was an error. Please try again.";
+                    responseMessage.classList.add("text-red-500");
+                    responseMessage.classList.remove("text-green-500");
                 });
         });
     </script>
