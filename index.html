@@ -40,15 +40,19 @@
             fetch(scriptURL)
                 .then(response => response.text())
                 .then(result => {
-                    responseMessage.textContent = result;
-                    if (result.includes("✅")) {
-                        responseMessage.classList.add("text-green-500");
-                        responseMessage.classList.remove("text-red-500");
-                    } else {
-                        responseMessage.classList.add("text-red-500");
-                        responseMessage.classList.remove("text-green-500");
-                    }
-                })
+    responseMessage.textContent = result;
+
+    if (result.includes("✅")) {
+        responseMessage.classList.add("text-green-500");
+        responseMessage.classList.remove("text-red-500");
+    } else if (result.includes("already been used")) {
+        responseMessage.classList.add("text-yellow-500"); // Use yellow for warnings
+        responseMessage.classList.remove("text-green-500", "text-red-500");
+    } else {
+        responseMessage.classList.add("text-red-500");
+        responseMessage.classList.remove("text-green-500", "text-yellow-500");
+    }
+})
                 .catch(error => {
                     console.error('Error:', error);
                     responseMessage.textContent = "There was an error. Please try again.";
