@@ -35,7 +35,7 @@
             const phoneNumber = document.getElementById("phoneNumber").value;
             const responseMessage = document.getElementById("responseMessage");
 
-            const scriptURL = `https://script.google.com/macros/s/AKfycbz-XAv9U0SsSMLIMiRGhYG-m2OJm6mpCMLO2xBgKjyiE5ur7cR4nFim3--0qUoxd9bDYQ/exec?code=${couponCode}&phone=${phoneNumber}`;
+            const scriptURL = `https://script.google.com/macros/s/AKfycbzOzOnBHcn9JDNsRowN5nNhFoU_PYV4wBz8B8pU51eTvz64DyQIcM1nHmxuJZxzA7viAg/exec?code=${couponCode}&phone=${phoneNumber}`;
 
             fetch(scriptURL)
                 .then(response => response.text())
