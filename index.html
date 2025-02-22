@@ -31,33 +31,35 @@
         document.getElementById("couponForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
-            const couponCode = document.getElementById("couponCode").value;
-            const phoneNumber = document.getElementById("phoneNumber").value;
+            const couponCode = document.getElementById("couponCode").value.trim();
+            const phoneNumber = document.getElementById("phoneNumber").value.trim();
             const responseMessage = document.getElementById("responseMessage");
 
-            const scriptURL = `https://script.google.com/macros/s/AKfycbzOzOnBHcn9JDNsRowN5nNhFoU_PYV4wBz8B8pU51eTvz64DyQIcM1nHmxuJZxzA7viAg/exec?code=${couponCode}&phone=${phoneNumber}`;
+            if (!couponCode || !phoneNumber) {
+                responseMessage.textContent = "Please enter both coupon code and phone number ❌";
+                responseMessage.className = "text-red-500";
+                return;
+            }
+
+            const scriptURL = `https://script.google.com/macros/s/AKfycbzOzOnBHcn9JDNsRowN5nNhFoU_PYV4wBz8B8pU51eTvz64DyQIcM1nHmxuJZxzA7viAg/exec?code=${encodeURIComponent(couponCode)}&phone=${encodeURIComponent(phoneNumber)}`;
 
             fetch(scriptURL)
                 .then(response => response.text())
                 .then(result => {
-    responseMessage.textContent = result;
+                    responseMessage.textContent = result;
 
-    if (result.includes("✅")) {
-        responseMessage.classList.add("text-green-500");
-        responseMessage.classList.remove("text-red-500");
-    } else if (result.includes("already been used")) {
-        responseMessage.classList.add("text-yellow-500"); // Use yellow for warnings
-        responseMessage.classList.remove("text-green-500", "text-red-500");
-    } else {
-        responseMessage.classList.add("text-red-500");
-        responseMessage.classList.remove("text-green-500", "text-yellow-500");
-    }
-})
+                    if (result.includes("✅")) {
+                        responseMessage.className = "text-green-500";
+                    } else if (result.includes("already been used")) {
+                        responseMessage.className = "text-yellow-500";
+                    } else {
+                        responseMessage.className = "text-red-500";
+                    }
+                })
                 .catch(error => {
                     console.error('Error:', error);
                     responseMessage.textContent = "There was an error. Please try again.";
-                    responseMessage.classList.add("text-red-500");
-                    responseMessage.classList.remove("text-green-500");
+                    responseMessage.className = "text-red-500";
                 });
         });
     </script>
