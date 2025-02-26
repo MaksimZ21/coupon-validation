@@ -41,7 +41,7 @@
                 return;
             }
 
-            const scriptURL = `https://script.google.com/macros/s/AKfycbzOzOnBHcn9JDNsRowN5nNhFoU_PYV4wBz8B8pU51eTvz64DyQIcM1nHmxuJZxzA7viAg/exec?code=${encodeURIComponent(couponCode)}&phone=${encodeURIComponent(phoneNumber)}`;
+            const scriptURL = `https://script.google.com/macros/s/AKfycbxVrcPmzsDXMoGXZIbOLiA2vDGYAZOl4CP3uQqsDiJAnyT2ppqGIBtNEV9GWv2jHhOr/exec?code=${encodeURIComponent(couponCode)}&phone=${encodeURIComponent(phoneNumber)}`;
 
             fetch(scriptURL)
                 .then(response => response.text())
