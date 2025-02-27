@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,18 +10,30 @@
     <div class="bg-white p-8 rounded-xl shadow-lg max-w-sm w-full">
         <h1 class="text-3xl font-semibold text-center text-indigo-600 mb-6">מערכת שוברים האקדמיה לסנוקר</h1>
         
-        <form id="couponForm" class="space-y-4">
+        <form id="couponForm" class="space-y-4 text-right">
             <div>
                 <label for="couponCode" class="block text-sm font-medium text-gray-700">קוד קופון</label>
-                <input type="text" id="couponCode" placeholder="הכנס קוד קופון" class="w-full px-4 py-2 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                <input type="text" id="couponCode" placeholder="הכנס קוד קופון" class="w-full px-4 py-2 mt-2 border rounded-lg shadow-sm text-right focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
             </div>
 
             <div>
                 <label for="phoneNumber" class="block text-sm font-medium text-gray-700">מספר טלפון</label>
-                <input type="text" id="phoneNumber" placeholder="הכנס מספר טלפון" class="w-full px-4 py-2 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                <input type="text" id="phoneNumber" placeholder="הכנס מספר טלפון" class="w-full px-4 py-2 mt-2 border rounded-lg shadow-sm text-right focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
             </div>
 
-            <button type="submit" class="w-full py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">הכנס שובר</button>
+            <div>
+                <label for="couponType" class="block text-sm font-medium text-gray-700">סוג קופון</label>
+                <select id="couponType" class="w-full px-4 py-2 mt-2 border rounded-lg shadow-sm text-right focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    <option value="" disabled selected>בחר סוג קופון</option>
+                    <option value="type1">150 ש"ח לרכישת מקל</option>
+                    <option value="type2">15% הנחה באחת ממסעדות הFRAME</option>
+                    <option value="type3">שעה + שעה חינם באינטרפול</option>
+                    <option value="type4">35 ש"ח הנחה על שעת משחק שנייה בG1</option>
+                    <option value="type5">10% בקניית טיול בפוקר טראוול</option>
+                </select>
+            </div>
+
+            <button type="submit" class="w-full py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">שלח</button>
         </form>
 
         <p id="responseMessage" class="text-center text-lg font-medium mt-4"></p>
@@ -33,15 +45,16 @@
 
             const couponCode = document.getElementById("couponCode").value.trim();
             const phoneNumber = document.getElementById("phoneNumber").value.trim();
+            const couponType = document.getElementById("couponType").value.trim();
             const responseMessage = document.getElementById("responseMessage");
 
-            if (!couponCode || !phoneNumber) {
-                responseMessage.textContent = "הכנס גם טלפון וגם מספר קופון ❌";
+            if (!couponCode || !phoneNumber || !couponType) {
+                responseMessage.textContent = "יש למלא את כל השדות ❌";
                 responseMessage.className = "text-red-500";
                 return;
             }
 
-            const scriptURL = `https://script.google.com/macros/s/AKfycbxm5RhthOBGlhifvrP-VgW2OV-UD9eADJJh710nZDpn9Pnh_JnTurqSrepM1VlvPlwjww/exec?code=${encodeURIComponent(couponCode)}&phone=${encodeURIComponent(phoneNumber)}`;
+            const scriptURL = `https://script.google.com/macros/s/AKfycbxm5RhthOBGlhifvrP-VgW2OV-UD9eADJJh710nZDpn9Pnh_JnTurqSrepM1VlvPlwjww/exec?code=${encodeURIComponent(couponCode)}&phone=${encodeURIComponent(phoneNumber)}&type=${encodeURIComponent(couponType)}`;
 
             fetch(scriptURL)
                 .then(response => response.text())
@@ -58,7 +71,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    responseMessage.textContent = "There was an error. Please try again.";
+                    responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
                     responseMessage.className = "text-red-500";
                 });
         });
